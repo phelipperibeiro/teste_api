@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Entities\ArquivoProdutos;
+use App\Services\ProdutoService;
 
 class ArquivoProdutoJob implements ShouldQueue
 {

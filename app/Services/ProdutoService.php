@@ -21,7 +21,7 @@ class ProdutoService
     public function processarArquivoProdutos(ArquivoProdutos $arquivoProdutos)
     {
         foreach ($arquivoProdutos->getProdutos() as $produto) {
-            Produtos::create($this->produto->toArray());
+            Produtos::create($produto->toArray());
         }
     }
 
