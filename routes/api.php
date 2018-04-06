@@ -72,7 +72,5 @@ Route::get('/produto-novo-lote', function () {
     $ArquivoProdutos->addProduto($Produto5);
     $ArquivoProdutos->addProduto($Produto6);
     
-    dd($ArquivoProdutos);
-
-    (new ProdutoService())->produtoNovoLote($ArquivoProdutos);
+    (new ProdutoService())->enviarArquivoProdutosFila($ArquivoProdutos);
 });

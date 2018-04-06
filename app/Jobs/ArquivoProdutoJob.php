@@ -7,10 +7,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Models\Produtos;
-use App\Entities\Produto;
+use App\Entities\ArquivoProdutos;
 
-class ProdutoJob implements ShouldQueue
+class ArquivoProdutoJob implements ShouldQueue
 {
 
     use Dispatchable,
@@ -18,16 +17,16 @@ class ProdutoJob implements ShouldQueue
         Queueable,
         SerializesModels;
 
-    private $produto;
+    private $arquivoProdutos;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Produto $produto)
+    public function __construct(ArquivoProdutos $ArquivoProdutos)
     {
-        $this->produto = $produto;
+        $this->arquivoProdutos = $ArquivoProdutos;
     }
 
     /**
@@ -37,7 +36,7 @@ class ProdutoJob implements ShouldQueue
      */
     public function handle()
     {
-        Produtos::create($this->produto->toArray());
+        (new ProdutoService())->processarArquivoProdutos($this->arquivoProdutos);
     }
 
 }
