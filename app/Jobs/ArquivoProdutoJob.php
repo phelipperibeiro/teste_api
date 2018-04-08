@@ -36,8 +36,8 @@ class ArquivoProdutoJob implements ShouldQueue
      * @return void
      */
     public function handle()
-    {
-        (new ProdutoService())->processarArquivoProdutos($this->arquivoProdutos);
+    {        
+        \App::make('ProdutoService')->processarArquivoProdutos($this->arquivoProdutos);
     }
 
 }

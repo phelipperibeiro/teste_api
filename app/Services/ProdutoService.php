@@ -16,6 +16,8 @@ class ProdutoService
                 ->onQueue('default');
 
         dispatch($job);
+        
+        return ['sucesso' => true];
     }
 
     public function processarArquivoProdutos(ArquivoProdutos $arquivoProdutos)
@@ -23,6 +25,47 @@ class ProdutoService
         foreach ($arquivoProdutos->getProdutos() as $produto) {
             Produtos::create($produto->toArray());
         }
+    }
+
+    public function getProduto($id)
+    {
+        if (!$response = Produtos::find($id)) {
+            return ['sucesso' => false, 'dados' => []];
+        }
+
+        return ['sucesso' => true, 'dados' => $response];
+    }
+
+    public function getProdutos()
+    {
+        if (!$response = Produtos::all()) {
+            return ['sucesso' => false, 'dados' => []];
+        }
+
+        return ['sucesso' => true, 'dados' => $response];
+    }
+
+    public function updateProduto($id, Request $request)
+    {
+        if (!$produto = Produtos::find($id)) {
+            return ['sucesso' => false];
+        }
+        
+        $produto->update($request->all());
+        
+        return ['sucesso' => true];
+    }
+
+    public function deleteProduto($id)
+    {
+        
+        if (!$produto = Produtos::find($id)) {
+            return ['sucesso' => false];
+        }
+        
+        $produto->delete();
+        
+        return ['sucesso' => true];
     }
 
 }
