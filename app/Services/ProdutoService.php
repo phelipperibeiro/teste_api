@@ -6,9 +6,30 @@ use Illuminate\Http\UploadedFile;
 use App\Jobs\ArquivoProdutoJob;
 use App\Entities\ArquivoProdutos;
 use App\Models\Produtos;
+use App\Entities\Produto;
 
 class ProdutoService
 {
+
+    public function processarDados(UploadedFile $file)
+    {
+        $dados = $this->extrairDadosPlanilha($file);
+
+        $ArquivoProdutos = new ArquivoProdutos();
+
+        foreach ($dados["Plan1"] as $linha) {
+
+            list($ln, $name, $free_shipping, $description, $price) = array_values($linha);
+
+            if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) {
+                break;
+            }
+
+            $ArquivoProdutos->addProduto(new Produto($ln, $name, $free_shipping, $description, $price));
+        }
+
+        return $this->enviarArquivoProdutosFila($ArquivoProdutos);
+    }
 
     public function enviarArquivoProdutosFila(ArquivoProdutos $arquivoProdutos)
     {
@@ -32,7 +53,7 @@ class ProdutoService
         // deletando o cabeçalho do excel
         unset($dados["Plan1"][0]);
         unset($dados["Plan1"][1]);
-        
+
         return $dados;
     }
 

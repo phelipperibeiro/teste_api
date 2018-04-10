@@ -2,9 +2,6 @@
 
 use Illuminate\Http\Request;
 use App\Services\ProdutoService;
-use App\Services\UtilsService;
-use App\Entities\Produto;
-use App\Entities\ArquivoProdutos;
 
 /*
   |--------------------------------------------------------------------------
@@ -17,9 +14,9 @@ use App\Entities\ArquivoProdutos;
   |
  */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::get('/produto/{id}', function ($id) {
     return App::make('ProdutoService')->getProduto($id);
@@ -38,19 +35,5 @@ Route::delete('/produto/{id}', function ($id) {
 });
 
 Route::post('/produto-novo-lote', function (Request $request) {
-
-    $dados = App::make('ProdutoService')->extrairDadosPlanilha($request->file('planilha'));
-    
-    $ArquivoProdutos = new ArquivoProdutos();
-
-    foreach ($dados["Plan1"] as $key => $value) {
-        
-        list($ln, $name, $free_shipping, $description, $price) = array_values($dados["Plan1"][$key]);
-        
-        if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) {break;}
-        
-        $ArquivoProdutos->addProduto(new Produto($ln, $name, $free_shipping, $description, $price));
-    }
-   
-    return App::make('ProdutoService')->enviarArquivoProdutosFila($ArquivoProdutos);
+    return App::make('ProdutoService')->processarDados($request->file('planilha'));
 });
