@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
 use App\Jobs\ArquivoProdutoJob;
 use App\Entities\ArquivoProdutos;
 use App\Models\Produtos;
@@ -16,8 +17,23 @@ class ProdutoService
                 ->onQueue('default');
 
         dispatch($job);
-        
+
         return ['sucesso' => true];
+    }
+
+    public function extrairDadosPlanilha(UploadedFile $file)
+    {
+        $fileName = date("Y-m-d-H:i:s") . '_' . uniqid() . '_' . $file->getClientOriginalName();
+        $file->storeAs('tmp/', $fileName);
+
+        $pathfileName = storage_path("app/tmp") . '/' . $fileName;
+        $dados = UtilsService::getSheets($pathfileName);
+
+        // deletando o cabeçalho do excel
+        unset($dados["Plan1"][0]);
+        unset($dados["Plan1"][1]);
+        
+        return $dados;
     }
 
     public function processarArquivoProdutos(ArquivoProdutos $arquivoProdutos)
@@ -50,21 +66,21 @@ class ProdutoService
         if (!$produto = Produtos::find($id)) {
             return ['sucesso' => false];
         }
-        
+
         $produto->update($request->all());
-        
+
         return ['sucesso' => true];
     }
 
     public function deleteProduto($id)
     {
-        
+
         if (!$produto = Produtos::find($id)) {
             return ['sucesso' => false];
         }
-        
+
         $produto->delete();
-        
+
         return ['sucesso' => true];
     }
 
