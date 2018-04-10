@@ -35,5 +35,14 @@ Route::delete('/produto/{id}', function ($id) {
 });
 
 Route::post('/produto-novo-lote', function (Request $request) {
+    
+    $validator = Validator::make($request->all(), [
+            'planilha'   => 'required|mimes:xls,xlsx'
+        ]);
+
+    if ($validator->fails()) {
+        return ['sucesso' => false, 'msg' => 'arquivo invalido'];
+    }
+    
     return App::make('ProdutoService')->processarDados($request->file('planilha'));
 });

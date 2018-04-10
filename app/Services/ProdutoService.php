@@ -14,11 +14,11 @@ class ProdutoService
     public function processarDados(UploadedFile $file)
     {
         $dados = $this->extrairDadosPlanilha($file);
-
+        
         $ArquivoProdutos = new ArquivoProdutos();
 
         foreach ($dados["Plan1"] as $linha) {
-
+            
             list($ln, $name, $free_shipping, $description, $price) = array_values($linha);
 
             if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) {
@@ -27,7 +27,7 @@ class ProdutoService
 
             $ArquivoProdutos->addProduto(new Produto($ln, $name, $free_shipping, $description, $price));
         }
-
+        
         return $this->enviarArquivoProdutosFila($ArquivoProdutos);
     }
 
@@ -53,6 +53,7 @@ class ProdutoService
         // deletando o cabeçalho do excel
         unset($dados["Plan1"][0]);
         unset($dados["Plan1"][1]);
+        unset($dados["Plan1"][2]);
 
         return $dados;
     }
