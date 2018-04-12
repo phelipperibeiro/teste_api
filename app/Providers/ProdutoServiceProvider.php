@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\ProdutoService;
+use App\Repositories\ProdutoRepository;
+use App\Models\Produtos;
 
 class ProdutoServiceProvider extends ServiceProvider
 {
@@ -24,9 +26,9 @@ class ProdutoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('ProdutoService', function(){
-            return new ProdutoService();
+        $this->app->bind('ProdutoService', function() {
+            return new ProdutoService(new ProdutoRepository(new Produtos()));
         });
-        
     }
+
 }

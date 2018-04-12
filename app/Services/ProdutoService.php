@@ -3,22 +3,29 @@
 namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
+use App\Repositories\Interfaces\ProdutoRepositoryInterface;
 use App\Jobs\ArquivoProdutoJob;
 use App\Entities\ArquivoProdutos;
-use App\Models\Produtos;
 use App\Entities\Produto;
 
 class ProdutoService
 {
 
+    private $produto;
+
+    public function __construct(ProdutoRepositoryInterface $produto)
+    {
+        $this->produto = $produto;
+    }
+
     public function processarDados(UploadedFile $file)
     {
         $dados = $this->extrairDadosPlanilha($file);
-        
+
         $ArquivoProdutos = new ArquivoProdutos();
 
         foreach ($dados["Plan1"] as $linha) {
-            
+
             list($ln, $name, $free_shipping, $description, $price) = array_values($linha);
 
             if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) {
@@ -27,7 +34,7 @@ class ProdutoService
 
             $ArquivoProdutos->addProduto(new Produto($ln, $name, $free_shipping, $description, $price));
         }
-        
+
         return $this->enviarArquivoProdutosFila($ArquivoProdutos);
     }
 
@@ -61,49 +68,29 @@ class ProdutoService
     public function processarArquivoProdutos(ArquivoProdutos $arquivoProdutos)
     {
         foreach ($arquivoProdutos->getProdutos() as $produto) {
-            Produtos::create($produto->toArray());
+            $this->produto->createProduto($produto->toArray());
         }
     }
 
     public function getProduto($id)
     {
-        if (!$response = Produtos::find($id)) {
-            return ['sucesso' => false, 'dados' => []];
-        }
-
-        return ['sucesso' => true, 'dados' => $response];
+        return $this->produto->getProduto($id);
     }
 
     public function getProdutos()
     {
-        if (!$response = Produtos::all()) {
-            return ['sucesso' => false, 'dados' => []];
-        }
-
-        return ['sucesso' => true, 'dados' => $response];
+        return $this->produto->getProdutos();
     }
 
-    public function updateProduto($id, Request $request)
+    public function updateProduto(array $dados, $id)
     {
-        if (!$produto = Produtos::find($id)) {
-            return ['sucesso' => false];
-        }
-
-        $produto->update($request->all());
-
-        return ['sucesso' => true];
+        return $this->produto->updateProduto($id, $dados);
     }
 
     public function deleteProduto($id)
     {
 
-        if (!$produto = Produtos::find($id)) {
-            return ['sucesso' => false];
-        }
-
-        $produto->delete();
-
-        return ['sucesso' => true];
+        return $this->produto->deleteProduto($id);
     }
 
 }

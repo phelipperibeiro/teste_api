@@ -27,7 +27,7 @@ Route::get('/produtos', function () {
 });
 
 Route::put('/produto/{id}', function ($id, Request $request) {
-    return App::make('ProdutoService')->updateProduto($id, $request->all());
+    return App::make('ProdutoService')->updateProduto($request->all(), $id);
 });
 
 Route::delete('/produto/{id}', function ($id) {

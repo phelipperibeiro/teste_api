@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\ProdutoService;
+use App\Repositories\ProdutoRepository;
+use App\Models\Produtos;
 
 class ProdutoServiceTest extends TestCase
 {
@@ -20,7 +22,7 @@ class ProdutoServiceTest extends TestCase
 
     public function testVerificaSeOTipoDaClassseEstaCorreto()
     {
-        $this->assertInstanceOf("App\Services\ProdutoService", new \App\Services\ProdutoService());
+        $this->assertInstanceOf("App\Services\ProdutoService", new \App\Services\ProdutoService(new ProdutoRepository(new Produtos())));
     }
 
 }
