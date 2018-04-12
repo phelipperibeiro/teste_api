@@ -59,4 +59,19 @@ class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryI
         return ['sucesso' => true];
     }
 
+    public function beginTransaction()
+    {
+        \DB::beginTransaction();
+    }
+
+    public function commit()
+    {
+        \DB::commit();
+    }
+
+    public function rollBack()
+    {
+        \DB::rollBack();
+    }
+
 }

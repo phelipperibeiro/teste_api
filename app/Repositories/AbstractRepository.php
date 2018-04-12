@@ -20,24 +20,24 @@ abstract class AbstractRepository
         return $this->model->all();
     }
 
-    public function create(array $data)
+    public function create(array $dados)
     {
-        return $this->model->create($data);
+        return $this->model->create($dados);
     }
 
-    public function update(array $data, $id)
+    public function update(array $dados, $id)
     {
-        return $this->model->find($id)->update($data);
+        return $this->model->find($id)->update($dados);
     }
 
     public function delete($id)
     {
         return $this->model->find($id)->delete();
     }
-
+    
     public function paginate($pages)
     {
         return $this->model->paginate($pages);
     }
-    
+
 }
