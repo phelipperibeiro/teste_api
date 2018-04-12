@@ -67,9 +67,16 @@ class ProdutoService
 
     public function processarArquivoProdutos(ArquivoProdutos $arquivoProdutos)
     {
-        foreach ($arquivoProdutos->getProdutos() as $produto) {
-            $this->produto->createProduto($produto->toArray());
-        }
+         $this->produto->model->beginTransaction();
+         try {
+                foreach ($arquivoProdutos->getProdutos() as $produto) {
+                    $this->produto->createProduto($produto->toArray());
+                }
+             $this->produto->model->commit();
+         } catch (Exception $e) {
+             $this->produto->model->rollback();
+             throw $e;
+         }
     }
 
     public function getProduto($id)
@@ -89,7 +96,6 @@ class ProdutoService
 
     public function deleteProduto($id)
     {
-
         return $this->produto->deleteProduto($id);
     }
 
