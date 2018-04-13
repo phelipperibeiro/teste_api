@@ -3,10 +3,11 @@
 namespace App\Repositories;
 
 use App\Repositories\Interfaces\ProdutoRepositoryInterface;
+use App\Repositories\Interfaces\Transaction;
 use App\Repositories\AbstractRepository;
 use App\Models\Produtos;
 
-class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryInterface
+class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryInterface, Transaction
 {
 
     public function __construct(Produtos $model)
