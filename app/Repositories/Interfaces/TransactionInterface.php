@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface Transaction
+interface TransactionInterface
 {
 
     public function beginTransaction();

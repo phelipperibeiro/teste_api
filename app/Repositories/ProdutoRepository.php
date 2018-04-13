@@ -7,7 +7,7 @@ use App\Repositories\Interfaces\Transaction;
 use App\Repositories\AbstractRepository;
 use App\Models\Produtos;
 
-class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryInterface, Transaction
+class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryInterface, TransactionInterface
 {
 
     public function __construct(Produtos $model)
