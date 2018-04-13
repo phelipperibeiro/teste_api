@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\Interfaces\ProdutoRepositoryInterface;
-use App\Repositories\Interfaces\Transaction;
+use App\Repositories\Interfaces\TransactionInterface;
 use App\Repositories\AbstractRepository;
 use App\Models\Produtos;
 
