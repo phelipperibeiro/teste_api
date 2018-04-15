@@ -18,6 +18,12 @@ php artisan server (para rodar aplicacao)  <br/>
 php artisan queue:listen (para escutar os processos que cai na fila)  <br/>
 
 ## Leroy API  
+<br>
+Se optar por importar collection, segue link abaixo
+<br>
+https://www.getpostman.com/collections/98a045e690d5601f7f31
+<br>
+<br>
 [GET:] <a HREF="http://localhost:8000/api/queue/{queue_name}" TARGET="_blank" > http://localhost:8000/api/queue/{queue_name} </a>: pegar status de um determinado processo na fila<br/> 
 [GET:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a>: pegar um determinado produto pelo ID do banco <br/>
 [GET:] <a HREF="http://localhost:8000/api/produtos" TARGET="_blank" > http://localhost:8000/api/produtos </a>: pegar todos os produtos <br/>
