@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
-abstract class AbstractRepository
+use App\Repositories\Interfaces\AbstractRepositoryInterface;
+
+abstract class AbstractRepository implements AbstractRepositoryInterface
 {
 
     /**
@@ -34,7 +36,7 @@ abstract class AbstractRepository
     {
         return $this->model->find($id)->delete();
     }
-    
+
     public function paginate($pages)
     {
         return $this->model->paginate($pages);

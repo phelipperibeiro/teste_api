@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateLoggerQueueTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -15,18 +16,19 @@ class CreateLoggerQueueTable extends Migration
     {
         Schema::create('logger_queue', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('status_id');
-            $table->foreign('status_id')->references('id')->on('logger_queue_status');
+            $table->integer('status_id')->unsigned();
+            $table->string('queue_name', 100)->unique();
+            $table->string('file_name', 500);
+            $table->string('logger_msg', 500);
             $table->timestamps();
         });
+
+        Schema::table('logger_queue', function($table) {
+            $table->foreign('status_id')->references('id')->on('logger_queue_status');
+        });
+        
     }
-    
-        # status
-    # 1 => em fila
-    # 2 => em processamento
-    # 3 => processado com sucesso
-    # 4 => processado com errors
-    
+
     /**
      * Reverse the migrations.
      *
@@ -36,4 +38,5 @@ class CreateLoggerQueueTable extends Migration
     {
         Schema::dropIfExists('logger_queue');
     }
+
 }

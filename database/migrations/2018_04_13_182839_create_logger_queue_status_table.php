@@ -14,8 +14,7 @@ class CreateLoggerQueueStatusTable extends Migration
     public function up()
     {
         Schema::create('logger_queue_status', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('queue_name', 100)->unique();
+            $table->increments('id');            
             $table->string('description', 100);
             $table->timestamps();
         });

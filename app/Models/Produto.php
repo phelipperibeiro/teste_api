@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Produtos extends Model
+class Produto extends Model
 {
 
+    protected $table = 'produto';
+    
     protected $fillable = [
         'lm',
         'name',
@@ -14,5 +16,6 @@ class Produtos extends Model
         'description',
         'price',
     ];
+    
 
 }

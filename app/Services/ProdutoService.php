@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
+use App\Constantes\LoggerQueueStatus;
 use App\Repositories\Interfaces\ProdutoRepositoryInterface;
+use App\Repositories\Interfaces\LoggerQueueRepositoryInterface;
 use App\Jobs\ArquivoProdutoJob;
 use App\Entities\ArquivoProdutos;
 use App\Entities\Produto;
@@ -12,26 +14,25 @@ class ProdutoService
 {
 
     private $produto;
+    private $loggerQueue;
 
-    public function __construct(ProdutoRepositoryInterface $produto)
+    public function __construct(ProdutoRepositoryInterface $produto, LoggerQueueRepositoryInterface $loggerQueue)
     {
         $this->produto = $produto;
+        $this->loggerQueue = $loggerQueue;
     }
 
     public function processarDados(UploadedFile $file)
     {
-        $dados = $this->extrairDadosPlanilha($file);
-
         $ArquivoProdutos = new ArquivoProdutos();
+        $ArquivoProdutos->setFileName($file->getClientOriginalName());
 
-        foreach ($dados["Plan1"] as $linha) {
+        foreach ($this->extrairDadosPlanilha($file)["Plan1"] as $linha) {
 
             list($ln, $name, $free_shipping, $description, $price) = array_values($linha);
 
-            if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) {
-                break;
-            }
-
+            if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) { continue; }
+                
             $ArquivoProdutos->addProduto(new Produto($ln, $name, $free_shipping, $description, $price));
         }
 
@@ -43,10 +44,15 @@ class ProdutoService
         $job = (new ArquivoProdutoJob($arquivoProdutos))
                 ->onConnection('database')
                 ->onQueue('default');
+                
+        $this->loggerQueue->createLoggerQueue(['queue_name' => $arquivoProdutos->getId(), 
+                                               'file_name' => $arquivoProdutos->getFileName(), 
+                                               'status_id' => LoggerQueueStatus::EM_FILA, 
+                                               'logger_msg' => '-' ]);
 
         dispatch($job);
 
-        return ['sucesso' => true];
+        return ['sucesso' => true, 'queue_name' => $arquivoProdutos->getId()];
     }
 
     public function extrairDadosPlanilha(UploadedFile $file)
@@ -68,7 +74,7 @@ class ProdutoService
     public function processarArquivoProdutos(ArquivoProdutos $arquivoProdutos)
     {
         $this->produto->beginTransaction();
-        
+
         try {
             foreach ($arquivoProdutos->getProdutos() as $produto) {
                 $this->produto->createProduto($produto->toArray());

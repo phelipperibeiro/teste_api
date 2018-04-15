@@ -9,6 +9,15 @@ class ArquivoProdutos
      */
     private $produtos = [];
 
+    private $fileName;
+
+    private $id;
+    
+    public function __construct()
+    {
+        $this->id = md5(uniqid(rand(), true));
+    }
+
     function addProduto(Produto $produto)
     {
         $this->produtos[] = $produto;
@@ -19,4 +28,19 @@ class ArquivoProdutos
         return $this->produtos;
     }
 
+    function getFileName()
+    {
+        return $this->fileName;
+    }
+    
+    function getId()
+    {
+        return $this->id;
+    }
+
+    function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+        return $this;
+    }
 }

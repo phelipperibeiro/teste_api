@@ -5,12 +5,12 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\ProdutoRepositoryInterface;
 use App\Repositories\Interfaces\TransactionInterface;
 use App\Repositories\AbstractRepository;
-use App\Models\Produtos;
+use App\Models\Produto;
 
 class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryInterface, TransactionInterface
 {
 
-    public function __construct(Produtos $model)
+    public function __construct(Produto $model)
     {
         $this->model = $model;
     }
@@ -44,7 +44,7 @@ class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryI
 
     public function updateProduto($id, array $dados)
     {
-        if (!$response = $this->update($dados, $id)) {
+        if (!$this->update($dados, $id)) {
             return ['sucesso' => false];
         }
 
@@ -53,7 +53,7 @@ class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryI
 
     public function deleteProduto($id)
     {
-        if (!$response = $this->delete($id)) {
+        if (!$this->delete($id)) {
             return ['sucesso' => false];
         }
 
