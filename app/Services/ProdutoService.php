@@ -101,7 +101,12 @@ class ProdutoService
             throw $e;
         }
     }
-
+    
+    public function getQueueStatus($queueName)
+    {
+        return $this->loggerQueue->getLoggerQueue($queueName);
+    }
+    
     public function getProduto($id)
     {
         return $this->produto->getProduto($id);

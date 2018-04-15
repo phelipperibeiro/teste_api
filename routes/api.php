@@ -20,6 +20,10 @@ use App\Services\ProdutoService;
 //    return $request->user();
 //});
 
+Route::get('/queue/{queue_name}', function ($queue_name) {
+    return App::make('ProdutoService')->getQueueStatus($queue_name);
+});
+
 Route::get('/produto/{id}', function ($id) {
     return App::make('ProdutoService')->getProduto($id);
 });
