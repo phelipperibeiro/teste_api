@@ -30,3 +30,9 @@ https://www.getpostman.com/collections/98a045e690d5601f7f31
 [PUT:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a>: atualizar um determinado produto pelo ID do mesmo <br/> 
 [DELETE:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a> deletar um determinado produto pelo ID do mesmo <br/>  
 [POST:] <a HREF="http://localhost:8000/api//produto-novo-lote" TARGET="_blank" > http://localhost:8000/api/produto-novo-lote </a> cadastrar produtos em lote, arquivo excel com extensões ('xlsx','xls')<br/>
+
+## TDD
+<br>
+Para rodar todos os testes, favor executar comando abaixo no bash
+<br>
+vendor/bin/phpunit -c  phpunit.xml

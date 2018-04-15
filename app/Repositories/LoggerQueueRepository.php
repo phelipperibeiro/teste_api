@@ -42,7 +42,7 @@ class LoggerQueueRepository extends AbstractRepository implements LoggerQueueRep
     public function updateLoggerQueue($queueName, array $dados)
     {
         if (!$this->model->where(['queue_name' => $queueName])->update($dados)) {
-            return ['sucesso' => false];
+             throw new \InvalidArgumentException("Job nao localizado na fila de processamento");
         }
 
         return ['sucesso' => true];
