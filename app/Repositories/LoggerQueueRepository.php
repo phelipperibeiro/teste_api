@@ -34,7 +34,7 @@ class LoggerQueueRepository extends AbstractRepository implements LoggerQueueRep
 
     public function updateLoggerQueue($queueName, array $dados)
     {
-        if (!$this->update($dados, $queueName)) {
+        if (!$this->model->where(['queue_name' => $queueName])->update($dados)) {
             return ['sucesso' => false];
         }
 

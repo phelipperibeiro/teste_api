@@ -31,8 +31,10 @@ class ProdutoService
 
             list($ln, $name, $free_shipping, $description, $price) = array_values($linha);
 
-            if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) { continue; }
-                
+            if (empty(array_filter([$ln, $name, $free_shipping, $description, $price]))) {
+                continue;
+            }
+
             $ArquivoProdutos->addProduto(new Produto($ln, $name, $free_shipping, $description, $price));
         }
 
@@ -44,11 +46,11 @@ class ProdutoService
         $job = (new ArquivoProdutoJob($arquivoProdutos))
                 ->onConnection('database')
                 ->onQueue('default');
-                
-        $this->loggerQueue->createLoggerQueue(['queue_name' => $arquivoProdutos->getId(), 
-                                               'file_name' => $arquivoProdutos->getFileName(), 
-                                               'status_id' => LoggerQueueStatus::EM_FILA, 
-                                               'logger_msg' => '-' ]);
+
+        $this->loggerQueue->createLoggerQueue(['queue_name' => $arquivoProdutos->getId(),
+            'file_name' => $arquivoProdutos->getFileName(),
+            'status_id' => LoggerQueueStatus::EM_FILA,
+            'logger_msg' => '-']);
 
         dispatch($job);
 
@@ -73,17 +75,28 @@ class ProdutoService
 
     public function processarArquivoProdutos(ArquivoProdutos $arquivoProdutos)
     {
-        $this->produto->beginTransaction();
+        $this->loggerQueue->updateLoggerQueue($arquivoProdutos->getId(), 
+                ['status_id' => LoggerQueueStatus::EM_PROCESSAMENTO]);
 
+        $this->produto->beginTransaction();
+        
         try {
+           
             foreach ($arquivoProdutos->getProdutos() as $produto) {
                 $this->produto->createProduto($produto->toArray());
             }
 
             $this->produto->commit();
-        } catch (Exception $e) {
 
+            $this->loggerQueue->updateLoggerQueue($arquivoProdutos->getId(), 
+                    ['status_id' => LoggerQueueStatus::PROCESSADO_COM_SUCESSO]);
+            
+        } catch (Exception $e) {
+            
             $this->produto->rollBack();
+
+            $this->loggerQueue->updateLoggerQueue($arquivoProdutos->getId(), 
+                    ['status_id' => LoggerQueueStatus::PROCESSADO_COM_ERROS, 'logger_msg' => $e->getMessage()]);
 
             throw $e;
         }

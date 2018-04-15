@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+ini_set('max_execution_time', 300);
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
