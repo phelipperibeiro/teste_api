@@ -24,9 +24,9 @@ php artisan queue:listen (para escutar os processos que cai na fila)  <br/>
 
 ## Leroy API  
 <br/> <br/>
-[GET:] <a HREF="http://localhost:8000/api/queue/{queue_name}" TARGET="_blank" > http://localhost:8000/api/queue/{queue_name} </a> <br/> 
-[GET:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a> <br/>
-[GET:] <a HREF="http://localhost:8000/api/produtos" TARGET="_blank" > http://localhost:8000/api/produtos </a> <br/>
-[PUT:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a> <br/> 
-[DELETE:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a> <br/> 
-[POST:] <a HREF="http://localhost:8000/api//produto-novo-lote" TARGET="_blank" > http://localhost:8000/api//produto-novo-lote </a> <br/>
+[GET:] <a HREF="http://localhost:8000/api/queue/{queue_name}" TARGET="_blank" > http://localhost:8000/api/queue/{queue_name} </a>: pegar status de um determinado processo na fila<br/> 
+[GET:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a>: pegar um determinado produto pelo ID do banco <br/>
+[GET:] <a HREF="http://localhost:8000/api/produtos" TARGET="_blank" > http://localhost:8000/api/produtos </a>: pegar todos os produtos <br/>
+[PUT:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a>: atualizar um determinado produto pelo ID do mesmo <br/> 
+[DELETE:] <a HREF="http://localhost:8000/api/produto/{id}" TARGET="_blank" > http://localhost:8000/api/produto/{id} </a> deletar um determinado produto pelo ID do mesmo <br/>  
+[POST:] <a HREF="http://localhost:8000/api//produto-novo-lote" TARGET="_blank" > http://localhost:8000/api/produto-novo-lote </a> cadastrar produtos em lote, arquivo excel com extensões ('xlsx','xls')<br/>
