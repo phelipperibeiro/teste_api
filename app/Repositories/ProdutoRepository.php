@@ -17,19 +17,19 @@ class ProdutoRepository extends AbstractRepository implements ProdutoRepositoryI
 
     public function createProduto(array $dados)
     {
-        if (!$this->create($dados)) {
+        if (!$produto = $this->create($dados)) {
             return ['sucesso' => false];
         }
-
-        return ['sucesso' => true];
+        
+        return ['sucesso' => true, 'id' => $produto->id ];
     }
 
     public function getProduto($id)
     {
-        if (!$response = $this->find($id)) {
+        if (!$response = $this->find($id)) {           
             return ['sucesso' => false, 'dados' => []];
         }
-
+        
         return ['sucesso' => true, 'dados' => $response];
     }
 
