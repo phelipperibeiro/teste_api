@@ -29,10 +29,10 @@ class LoggerQueueRepository extends AbstractRepository implements LoggerQueueRep
                 'logger_queue.status_id',
                 'logger_queue.queue_name',
                 'logger_queue_status.description'
-            )->leftjoin('logger_queue_status', 'logger_queue_status.id', '=', 'logger_queue.status_id')
+            )->join('logger_queue_status', 'logger_queue_status.id', '=', 'logger_queue.status_id')
              ->where('queue_name', $queueName)->get();
-
-        if (!$response) {
+         
+        if ($response->isEmpty()) {
             return ['sucesso' => false, 'dados' => []];
         }
         
